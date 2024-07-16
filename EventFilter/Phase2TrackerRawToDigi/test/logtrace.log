@@ -1,12 +1,12 @@
 [Phase2TrackerCablingCfgESSource::Phase2TrackerCablingCfgESSource] Constructing object...
-%MSG-i StatisticsSenderService:  file_open 16-Jul-2024 14:08:00 CEST pre-events
+%MSG-i StatisticsSenderService:  file_open 16-Jul-2024 15:59:58 CEST pre-events
 openingFile: opening file:digi2raw.root
 
 %MSG
-16-Jul-2024 14:08:00 CEST  Initiating request to open file file:digi2raw.root
-16-Jul-2024 14:08:00 CEST  Successfully opened file file:digi2raw.root
+16-Jul-2024 15:59:58 CEST  Initiating request to open file file:digi2raw.root
+16-Jul-2024 15:59:58 CEST  Successfully opened file file:digi2raw.root
 [Phase2TrackerCablingCfgESSource::make] Building FED cabling map from cfg.
------ Begin Fatal Exception 16-Jul-2024 14:08:01 CEST-----------------------
+----- Begin Fatal Exception 16-Jul-2024 15:59:59 CEST-----------------------
 An exception of category 'ESGetTokenWrongTransition' occurred while
    [0] Processing  stream begin Run run: 1 stream: 0
    [1] Calling method for module Phase2TrackerDigiProducer/'Phase2TrackerDigiProducer'
@@ -28,5 +28,5 @@ must be used in the function associated with the ESConsumesCollector
 returned by the setWhatProduced function.
 ----- End Fatal Exception -------------------------------------------------
 Another exception was caught while trying to clean up files after the primary fatal exception.
-16-Jul-2024 14:08:01 CEST  Closed file file:digi2raw.root
+16-Jul-2024 15:59:59 CEST  Closed file file:digi2raw.root
 [Phase2TrackerCablingCfgESSource::~Phase2TrackerCablingCfgESSource] Destructing object...
