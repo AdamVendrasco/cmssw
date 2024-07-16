@@ -23,6 +23,8 @@ process.source = cms.Source("PoolSource",
 process.load('TestbeamCabling_cfi')
 # process.load('DummyCablingTxt_cfi')
 
+process.load("Configuration.Geometry.GeometryExtended2026D98Reco_cff")
+process.load("Configuration.Geometry.GeometryExtended2026D98_cff")
 # process.load('Configuration.Geometry.GeometryExtended2023D4Reco_cff')
 # process.load('EventFilter.Phase2TrackerRawToDigi.Phase2TrackerCommissioningDigiProducer_cfi')
 # process.load('EventFilter.Phase2TrackerRawToDigi.Phase2TrackerDigiProducer_cfi')
@@ -35,7 +37,7 @@ process.load("Configuration.Geometry.GeometryExtended2026D98_cff")
 
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 from Configuration.AlCa.GlobalTag import GlobalTag
-process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:phase2_realistic', '')
+process.GlobalTag = GlobalTag(process.GlobalTag, '140X_mcRun4_realistic_v3', '')
 
 # use these labels instead to run on raw data
 process.Phase2TrackerDigiProducer.ProductLabel = cms.InputTag("rawDataCollector")
