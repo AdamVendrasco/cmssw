@@ -9,13 +9,13 @@ process.MessageLogger = cms.Service("MessageLogger",
         logtrace      = cms.untracked.PSet( threshold  = cms.untracked.string('DEBUG') ),
         debugModules  = cms.untracked.vstring( 'Phase2TrackerDigiProducer', 'Phase2TrackerFEDBuffer', 'Phase2TrackerFEDFEDebug', 'Phase2TrackerStubProducer' )
 )
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1))
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10))
 
 
 process.source = cms.Source("PoolSource",
 # use this to read testbeam .dat files
 # process.source = cms.Source("NewEventStreamFileReader",
-    fileNames = cms.untracked.vstring( 'file:'+sys.argv[-1])
+    fileNames = cms.untracked.vstring( 'file://digi2raw.root')
 )
 
 
@@ -30,10 +30,12 @@ process.load('EventFilter.Phase2TrackerRawToDigi.Phase2TrackerDigiProducer_cfi')
 process.load('EventFilter.Phase2TrackerRawToDigi.Phase2TrackerDebugProducer_cfi')
 process.load('EventFilter.Phase2TrackerRawToDigi.Phase2TrackerStubProducer_cfi')
 
-# imported from runthematrix
-# process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
-# from Configuration.AlCa.GlobalTag import GlobalTag
-# process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:run2_mc', '')
+process.load("Configuration.Geometry.GeometryExtended2026D98Reco_cff")
+process.load("Configuration.Geometry.GeometryExtended2026D98_cff")
+
+process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
+from Configuration.AlCa.GlobalTag import GlobalTag
+process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:phase2_realistic', '')
 
 # use these labels instead to run on raw data
 process.Phase2TrackerDigiProducer.ProductLabel = cms.InputTag("rawDataCollector")
