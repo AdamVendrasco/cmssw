@@ -1,32 +1,20 @@
 [Phase2TrackerCablingCfgESSource::Phase2TrackerCablingCfgESSource] Constructing object...
-%MSG-i StatisticsSenderService:  file_open 16-Jul-2024 15:59:58 CEST pre-events
+%MSG-i StatisticsSenderService:  file_open 16-Jul-2024 16:18:23 CEST pre-events
 openingFile: opening file:digi2raw.root
 
 %MSG
-16-Jul-2024 15:59:58 CEST  Initiating request to open file file:digi2raw.root
-16-Jul-2024 15:59:58 CEST  Successfully opened file file:digi2raw.root
+16-Jul-2024 16:18:23 CEST  Initiating request to open file file:digi2raw.root
+16-Jul-2024 16:18:23 CEST  Successfully opened file file:digi2raw.root
 [Phase2TrackerCablingCfgESSource::make] Building FED cabling map from cfg.
------ Begin Fatal Exception 16-Jul-2024 15:59:59 CEST-----------------------
-An exception of category 'ESGetTokenWrongTransition' occurred while
+----- Begin Fatal Exception 16-Jul-2024 16:18:24 CEST-----------------------
+An exception of category 'NoRecord' occurred while
    [0] Processing  stream begin Run run: 1 stream: 0
-   [1] Calling method for module Phase2TrackerDigiProducer/'Phase2TrackerDigiProducer'
+   [1] Calling method for module Phase2TrackerStubProducer/'Phase2TrackerStubProducer'
 Exception Message:
-The transition ID stored in the ESGetToken does not match the
-transition where the token is being used. The associated record
-type is: Phase2TrackerCablingRcd
-For producers, filters and analyzers this transition ID is
-set as a template parameter to the call to the esConsumes
-function that creates the token. Event is the default transition.
-Other possibilities are BeginRun, EndRun, BeginLuminosityBlock,
-or EndLuminosityBlock. You may need multiple tokens if you want to
-get the same data in multiple transitions. The transition ID has a
-different meaning in ESProducers. For ESProducers, the transition
-ID identifies the function that produces the EventSetup data (often
-there is one function named produce but there can be multiple
-functions with different names). For ESProducers, the ESGetToken
-must be used in the function associated with the ESConsumesCollector
-returned by the setWhatProduced function.
+No "TrackerDigiGeometryRecord" record found in the EventSetup.
+
+ Please add an ESSource or ESProducer that delivers such a record.
 ----- End Fatal Exception -------------------------------------------------
 Another exception was caught while trying to clean up files after the primary fatal exception.
-16-Jul-2024 15:59:59 CEST  Closed file file:digi2raw.root
+16-Jul-2024 16:18:24 CEST  Closed file file:digi2raw.root
 [Phase2TrackerCablingCfgESSource::~Phase2TrackerCablingCfgESSource] Destructing object...
