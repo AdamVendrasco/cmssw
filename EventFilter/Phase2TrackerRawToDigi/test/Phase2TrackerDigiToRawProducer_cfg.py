@@ -6,8 +6,8 @@ from MCsamples.RelVal_1400_D98.PU0_DisplacedSingleMuFlatPt1p5To8_cfi import *
 inputMC = getCMSdataFromCards()
 process.load("FWCore.MessageService.MessageLogger_cfi")
 process.MessageLogger = cms.Service("MessageLogger",
-        destinations  = cms.untracked.vstring('logtrace' ),
-        logtrace      = cms.untracked.PSet( threshold  = cms.untracked.string('DEBUG') ),
+        destinations  = cms.untracked.vstring('DigiToRawlogtrace' ),
+        DigiToRawlogtrace      = cms.untracked.PSet( threshold  = cms.untracked.string('DEBUG') ),
         debugModules  = cms.untracked.vstring( 'Phase2TrackerDigiToRawProducer', 'Phase2TrackerFEDBuffer' )
 )
 
@@ -42,7 +42,6 @@ process.out = cms.OutputModule(
 process.p = cms.Path(process.Phase2TrackerDigiToRawProducer)
 
 process.e = cms.EndPath(process.out)
-print(inputMC)
 # Automatic addition of the customisation function from SLHCUpgradeSimulations.Configuration.combinedCustoms
 #from SLHCUpgradeSimulations.Configuration.combinedCustoms import cust_2023tilted4021
 #call to customisation function cust_2023tilted4021 imported from SLHCUpgradeSimulations.Configuration.combinedCustoms
