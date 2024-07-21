@@ -2,12 +2,14 @@ import FWCore.ParameterSet.Config as cms
 import sys
 
 process = cms.Process("DigiToRaw")
+
 from MCsamples.RelVal_1400_D98.PU0_DisplacedSingleMuFlatPt1p5To8_cfi import *
 inputMC = getCMSdataFromCards()
+
 process.load("FWCore.MessageService.MessageLogger_cfi")
 process.MessageLogger = cms.Service("MessageLogger",
-        destinations  = cms.untracked.vstring('DigiToRawlogtrace' ),
-        DigiToRawlogtrace      = cms.untracked.PSet( threshold  = cms.untracked.string('DEBUG') ),
+        destinations  = cms.untracked.vstring('logtrace' ),
+        logtrace      = cms.untracked.PSet( threshold  = cms.untracked.string('DEBUG') ),
         debugModules  = cms.untracked.vstring( 'Phase2TrackerDigiToRawProducer', 'Phase2TrackerFEDBuffer' )
 )
 

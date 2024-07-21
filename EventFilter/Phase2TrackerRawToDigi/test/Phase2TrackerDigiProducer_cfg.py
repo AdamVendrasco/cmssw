@@ -5,8 +5,8 @@ process = cms.Process("RawToDigi")
 
 process.load("FWCore.MessageService.MessageLogger_cfi")
 process.MessageLogger = cms.Service("MessageLogger",
-        destinations  = cms.untracked.vstring('DigiProducerlogtrace' ),
-        DigiProducerlogtrace      = cms.untracked.PSet( threshold  = cms.untracked.string('DEBUG') ),
+        destinations  = cms.untracked.vstring('logtrace' ),
+        logtrace      = cms.untracked.PSet( threshold  = cms.untracked.string('DEBUG') ),
         debugModules  = cms.untracked.vstring( 'Phase2TrackerDigiProducer', 'Phase2TrackerFEDBuffer', 'Phase2TrackerFEDFEDebug', 'Phase2TrackerStubProducer' )
 )
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10))
