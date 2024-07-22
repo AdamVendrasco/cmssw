@@ -1,6 +1,6 @@
 // -*- C++ -*-
 //
-// Package:    EDModules/RawDataProducer
+// Package:    EventFilter/RawDataProducer
 // Class:      RawDataProducer
 //
 /**\class RawDataProducer RawDataProducer.cc EDModules/RawDataProducer/plugins/RawDataProducer.cc
@@ -29,6 +29,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include "FWCore/MessageLogger/interface/MessageLogger.h"
 
 //
 // class declaration
@@ -61,7 +62,7 @@ private:
 // constructors and destructor
 //
 RawDataProducer::RawDataProducer(const edm::ParameterSet& iConfig):
-    inputFileName_(iConfig.getParameter<std::string>("inputFileName")) // Initialize the member variable
+    inputFileName_(iConfig.getParameter<std::string>("inputFileName")) 
 {
   //register your products
   produces<std::vector<int>>("rawData");
@@ -81,20 +82,33 @@ RawDataProducer::~RawDataProducer() {
 // ------------ method called to produce the data  ------------
 void RawDataProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup) {
   using namespace edm;
-
+  //Logging the beginning of the produce method
+  edm::LogInfo("RawDataProducer") << "Starting produce method";
+  
   // Read the raw data from the text file
-  std::ifstream inputFile(inputFileName_);
+    std::ifstream inputFile(inputFileName_);
+  if (!inputFile.is_open()) {
+    edm::LogError("RawDataProducer") << "Failed to open file: " << inputFileName_;
+    return;
+  }
+  
   std::vector<int> rawData;
   int value;
   while (inputFile >> value) {
     rawData.push_back(value);
   }
 
+  // Log the number of values read
+  edm::LogInfo("RawDataProducer") << "Read " << rawData.size() << " values from the file";
+
   // Create the product
   auto rawDataProduct = std::make_unique<std::vector<int>>(rawData);
 
   // Put the product into the event
   iEvent.put(std::move(rawDataProduct), "rawData");
+  
+  // Log the completion of the produce method
+  edm::LogInfo("RawDataProducer") << "Finished produce method";
 }
 
 // ------------ method called once each stream before processing any runs, lumis or events  ------------
