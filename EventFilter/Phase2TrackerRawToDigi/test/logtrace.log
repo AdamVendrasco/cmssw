@@ -1,0 +1,95 @@
+' looking for alignment labels ''.
+idealForDigi' IGNORING alignment labels 'fakeForIdeal'.
+Finds tag HCAL : 1
+Finds tag ZDC : 1
+Finds tag CASTOR : 0
+Finds tag EcalBarrel : 1
+Finds tag EcalEndcap : 0
+Finds tag EcalPreshower : 0
+Finds tag TOWER : 1
+%MSG-i HCAL:  (NoModuleName) 21-Jul-2024 17:12:23 CEST pre-events
+CaloTowerTopologyEP::CaloTowerTopologyEP
+%MSG
+' looking for alignment labels ''.
+idealForDigi' IGNORING alignment labels 'fakeForIdeal'.
+%MSG-i Alignments:  (NoModuleName) FakeAlignmentProducer()  21-Jul-2024 17:12:23 CEST pre-events
+Providing data with label 'fakeForIdeal'.
+%MSG
+GEMGeometryESModule::initailized with flags 1:0
+%MSG-i Geometry:  (NoModuleName) MTDDigiGeometryESModule()  21-Jul-2024 17:12:23 CEST pre-events
+Label 'idealForDigi' IGNORING alignment labels 'fakeForIdeal'.
+%MSG
+%MSG-i Geometry:  (NoModuleName) MTDDigiGeometryESModule()  21-Jul-2024 17:12:23 CEST pre-events
+Label '' IGNORING alignment labels ''.
+%MSG
+%MSG-i SiPixelQualityESProducer:  (NoModuleName) 21-Jul-2024 17:12:23 CEST  pre-events
+Module = "" (appendToDataLabel = "", siPixelQualityFromDbLabel = "")
+%MSG
+%MSG-i SiStripBackPlaneCorrectionDepESProducer:  (NoModuleName)  21-Jul-2024 17:12:23 CEST pre-events
+ctor
+%MSG
+%MSG-i SiStripLorentzAngleDepESProducer:  (NoModuleName)  21-Jul-2024 17:12:23 CEST pre-events
+ctor
+%MSG
+%MSG-i SiStripQualityESProducer:  (NoModuleName) 21-Jul-2024 17:12:23 CEST  pre-events
+ctor
+%MSG
+%MSG-i SiStripQualityESProducer:  (NoModuleName) 21-Jul-2024 17:12:23 CEST  pre-events
+[SiStripQualityESProducer::ctor] Going to get data from record SiStripDetVOffRcd with tag 
+%MSG
+%MSG-i SiStripQualityESProducer:  (NoModuleName) 21-Jul-2024 17:12:23 CEST  pre-events
+[SiStripQualityESProducer::ctor] Going to get data from record SiStripDetCablingRcd with tag 
+%MSG
+%MSG-i SiStripQualityESProducer:  (NoModuleName) 21-Jul-2024 17:12:23 CEST  pre-events
+[SiStripQualityESProducer::ctor] Going to get data from record RunInfoRcd with tag 
+%MSG
+%MSG-i SiStripQualityESProducer:  (NoModuleName) 21-Jul-2024 17:12:23 CEST  pre-events
+[SiStripQualityESProducer::ctor] Going to get data from record SiStripBadChannelRcd with tag 
+%MSG
+%MSG-i SiStripQualityESProducer:  (NoModuleName) 21-Jul-2024 17:12:23 CEST  pre-events
+[SiStripQualityESProducer::ctor] Going to get data from record SiStripBadFiberRcd with tag 
+%MSG
+%MSG-i SiStripQualityESProducer:  (NoModuleName) 21-Jul-2024 17:12:23 CEST  pre-events
+[SiStripQualityESProducer::ctor] Going to get data from record SiStripBadModuleRcd with tag 
+%MSG
+%MSG-i SiStripQualityESProducer:  (NoModuleName) 21-Jul-2024 17:12:23 CEST  pre-events
+[SiStripQualityESProducer::ctor] Going to get data from record SiStripBadStripRcd with tag 
+%MSG
+%MSG-i Geometry:  (NoModuleName) TrackerDigiGeometryESModule()  21-Jul-2024 17:12:23 CEST pre-events
+Label 'idealForDigi' IGNORING alignment labels 'fakeForIdeal'.
+%MSG
+%MSG-i Geometry:  (NoModuleName) TrackerDigiGeometryESModule()  21-Jul-2024 17:12:23 CEST pre-events
+Label '' looking for alignment labels ''.
+%MSG
+TrackerGeometricDetESModule::fromDDD 1  fromDD4hep 0
+%MSG-i TRACKER:  (NoModuleName) 21-Jul-2024 17:12:23 CEST pre-events
+TrackerTopologyEP::TrackerTopologyEP
+%MSG
+%MSG-i HCAL:  (NoModuleName) 21-Jul-2024 17:12:23 CEST pre-events
+HcalHardcodeCalibrations::HcalHardcodeCalibrations->...
+%MSG
+[Phase2TrackerCablingCfgESSource::Phase2TrackerCablingCfgESSource] Constructing object...
+%MSG-i StatisticsSenderService:  file_open 21-Jul-2024 17:12:25 CEST pre-events
+openingFile: opening /store/relval/CMSSW_14_0_0_pre2/RelValDisplacedSingleMuFlatPt1p5To8/GEN-SIM-DIGI-RAW/133X_mcRun4_realistic_v1_STD_2026D98_noPU_RV229-v1/2580000/3ce31040-55a5-4469-8ee2-16d050bb6ade.root
+
+%MSG
+21-Jul-2024 17:12:25 CEST  Initiating request to open file root://eoscms.cern.ch//eos/cms/store/relval/CMSSW_14_0_0_pre2/RelValDisplacedSingleMuFlatPt1p5To8/GEN-SIM-DIGI-RAW/133X_mcRun4_realistic_v1_STD_2026D98_noPU_RV229-v1/2580000/3ce31040-55a5-4469-8ee2-16d050bb6ade.root
+%MSG-i XrdAdaptorLvl2:  file_open 21-Jul-2024 17:12:26 CEST pre-events
+-------------------------------
+Traceroute:
+1. || eoscms-ns-ip563.cern.ch / IPv6 / [2001:1458:301:17::100:9] / 1094 / krb5 / endpoint ||
+-------------------------------
+%MSG
+%MSG-w XrdAdaptorInternal:  file_open 21-Jul-2024 17:12:26 CEST pre-events
+Failed to open file at URL root://eoscms.cern.ch:1094//eos/cms/store/relval/CMSSW_14_0_0_pre2/RelValDisplacedSingleMuFlatPt1p5To8/GEN-SIM-DIGI-RAW/133X_mcRun4_realistic_v1_STD_2026D98_noPU_RV229-v1/2580000/3ce31040-55a5-4469-8ee2-16d050bb6ade.root?xrdcl.requuid=d1de14f7-13bb-4f60-beec-e0022e85b9df.
+%MSG
+%MSG-i XrdAdaptorLvl2:  file_open 21-Jul-2024 17:12:26 CEST pre-events
+-------------------------------
+Traceroute:
+1. || eoscms-ns-ip563.cern.ch / IPv6 / [2001:1458:301:17::100:9] / 1094 / krb5 / endpoint ||
+-------------------------------
+%MSG
+%MSG-w XrdAdaptorInternal:  file_open 21-Jul-2024 17:12:26 CEST pre-events
+Failed to open file at URL root://eoscms.cern.ch:1094//eos/cms/store/relval/CMSSW_14_0_0_pre2/RelValDisplacedSingleMuFlatPt1p5To8/GEN-SIM-DIGI-RAW/133X_mcRun4_realistic_v1_STD_2026D98_noPU_RV229-v1/2580000/3ce31040-55a5-4469-8ee2-16d050bb6ade.root?tried=&xrdcl.requuid=5aea2bcf-93c8-4049-ba15-f404c03d4a53.
+%MSG
+21-Jul-2024 17:12:26 CEST  Initiating request to open file root://xrootd-cms.infn.it//store/relval/CMSSW_14_0_0_pre2/RelValDisplacedSingleMuFlatPt1p5To8/GEN-SIM-DIGI-RAW/133X_mcRun4_realistic_v1_STD_2026D98_noPU_RV229-v1/2580000/3ce31040-55a5-4469-8ee2-16d050bb6ade.root
