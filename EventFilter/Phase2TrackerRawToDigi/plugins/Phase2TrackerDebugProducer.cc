@@ -11,7 +11,7 @@
 #include "EventFilter/Phase2TrackerRawToDigi/interface/Phase2TrackerFEDFEDebug.h"
 #include "EventFilter/Phase2TrackerRawToDigi/interface/utils.h"
 #include "FWCore/Framework/interface/Frameworkfwd.h"
-#include "FWCore/Framework/interface/global/EDProducer.h"
+#include "FWCore/Framework/interface/stream/EDProducer.h"
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/Framework/interface/EventSetup.h"
 #include "FWCore/Framework/interface/ESHandle.h"
@@ -29,12 +29,12 @@ using namespace std;
 
 namespace Phase2Tracker {
 
-  class Phase2TrackerDebugProducer : public edm::global::EDProducer<> {
+  class Phase2TrackerDebugProducer : public edm::stream::EDProducer<> {
   public:
     Phase2TrackerDebugProducer(const edm::ParameterSet& pset);
     ~Phase2TrackerDebugProducer() override = default;
     virtual void beginRun(edm::Run const&, edm::EventSetup const&);
-    virtual void produce(edm::StreamID, edm::Event&, const edm::EventSetup&) const override;
+    virtual void produce(edm::Event&, const edm::EventSetup&) override;
 
   private:
     const edm::ESGetToken<Phase2TrackerCabling, Phase2TrackerCablingRcd> ph2CablingESToken_;
@@ -55,7 +55,7 @@ namespace Phase2Tracker {
     cabling_ = &es.getData(ph2CablingESToken_);
   }
 
-  void Phase2TrackerDebugProducer::produce(edm::StreamID, edm::Event& event, const edm::EventSetup& es) const {
+  void Phase2TrackerDebugProducer::produce(edm::Event& event, const edm::EventSetup& es) {
     std::unique_ptr<edmNew::DetSetVector<Phase2TrackerFEDFEDebug>> debugs(
         new edmNew::DetSetVector<Phase2TrackerFEDFEDebug>());
     // Retrieve FEDRawData collection

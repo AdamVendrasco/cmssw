@@ -76,9 +76,9 @@ using namespace std;
 
 namespace Phase2Tracker {
 
-  Phase2TrackerDigiProducer::Phase2TrackerDigiProducer(const edm::ParameterSet& pset)
-      : ph2CablingESToken_(esConsumes<Phase2TrackerCabling, Phase2TrackerCablingRcd, edm::Transition::BeginRun>()),
-	//ph2CablingESToken_(esConsumes()),
+Phase2TrackerDigiProducer::Phase2TrackerDigiProducer(const edm::ParameterSet& pset)
+       : ph2CablingESToken_(esConsumes<Phase2TrackerCabling, Phase2TrackerCablingRcd, edm::Transition::BeginRun>()),
+         //       : ph2CablingESToken_(esConsumes()),
         geomToken_(esConsumes<TrackerGeometry, TrackerDigiGeometryRecord, edm::Transition::BeginRun>()),
         topoToken_(esConsumes<TrackerTopology, TrackerTopologyRcd, edm::Transition::BeginRun>()),
         token_(consumes<FEDRawDataCollection>(pset.getParameter<edm::InputTag>("ProductLabel"))),
@@ -121,7 +121,9 @@ namespace Phase2Tracker {
 
     // Analyze strip tracker FED buffers in data
     std::vector<int> feds = cabling_->listFeds();
-    for (size_t fedIndex = Phase2Tracker::FED_ID_MIN; fedIndex <= Phase2Tracker::CMS_FED_ID_MAX; ++fedIndex) {
+    // Fix from Ian
+    //for (size_t fedIndex = Phase2Tracker::FED_ID_MIN; fedIndex <= Phase2Tracker::CMS_FED_ID_MAX; ++fedIndex) {
+    for (int fedIndex : feds) {
       const FEDRawData& fed = buffers->FEDData(fedIndex);
       if (fed.size() == 0)
         continue;
@@ -262,8 +264,16 @@ namespace Phase2Tracker {
         int ichan = 0;
         for (int ife = 0; ife < MAX_FE_PER_FED; ife++) {
           // get fedid from cabling
-          const Phase2TrackerModule mod = cabling_->findFedCh(std::make_pair(fedIndex, ife));
-          uint32_t detid = mod.getDetid();
+          // BODGE FIX from Ian: this crashed, as it assumes all FED input channels are connected to a module. Can we find prettier solution?
+          uint32_t detid = 0;
+          try {
+             const Phase2TrackerModule mod = cabling_->findFedCh(std::make_pair(fedIndex, ife));
+             detid = mod.getDetid();
+          }
+          catch (...) {
+            edm::LogWarning("Phase2TrackerDigiProducer")<<"FED with unconnected input channel found, making code unhappy "<<fedIndex<<" "<<ife;
+          }
+
           // container for this module's digis
           std::vector<Phase2TrackerCluster1D> clustersTop;
           std::vector<Phase2TrackerCluster1D> clustersBottom;
@@ -285,13 +295,18 @@ namespace Phase2Tracker {
                   ss << std::dec << " Son2S " << (int)unpacker.clusterX() << " " << (int)unpacker.clusterSize() << " "
                      << (int)unpacker.chipId() << endl;
 #endif
-                  if (unpacker.rawX() % 2) {
-                    clustersTop.push_back(
-                        Phase2TrackerCluster1D(unpacker.clusterX(), unpacker.clusterY(), unpacker.clusterSize()));
+                  // BODGE FIX from Ian -- Must understand why strip number wrong!
+                  if (unpacker.clusterX() < 1016) {
+                    if (unpacker.rawX() % 2) {
+                       clustersTop.push_back(
+                          Phase2TrackerCluster1D(unpacker.clusterX(), unpacker.clusterY(), unpacker.clusterSize()));
+                    } else {
+                       clustersBottom.push_back(
+                          Phase2TrackerCluster1D(unpacker.clusterX(), unpacker.clusterY(), unpacker.clusterSize()));
+                    }
                   } else {
-                    clustersBottom.push_back(
-                        Phase2TrackerCluster1D(unpacker.clusterX(), unpacker.clusterY(), unpacker.clusterSize()));
-                  }
+                      edm::LogError("Phase2TrackerDigiProducer")<<"MESS UP 2S: STRIP NUMBER OUT OF RANGE  "<<unpacker.clusterX()<<" "<<unpacker.clusterY()<<" "<<unpacker.clusterSize();
+                  }                  
                   unpacker++;
                 }
               } else if (channel.dettype() == DET_SonPS) {
@@ -302,8 +317,13 @@ namespace Phase2Tracker {
                   ss << std::dec << " SonPS " << (int)unpacker.clusterX() << " " << (int)unpacker.clusterSize() << " "
                      << (int)unpacker.chipId() << endl;
 #endif
-                  clustersTop.push_back(Phase2TrackerCluster1D(
+                  // BODGE FIX from Ian -- Must understand why strip number wrong!
+                  if (unpacker.clusterX() < 1016) {
+                     clustersTop.push_back(Phase2TrackerCluster1D(
                       unpacker.clusterX(), unpacker.clusterY(), unpacker.clusterSize(), unpacker.threshold()));
+                  } else {
+                     edm::LogError("Phase2TrackerDigiProducer")<<"MESS UP SonPS: STRIP NUMBER OUT OF RANGE  "<<unpacker.clusterX()<<" "<<unpacker.clusterY()<<" "<<unpacker.clusterSize();
+                  }
                   unpacker++;
                 }
               } else if (channel.dettype() == DET_PonPS) {
@@ -314,8 +334,13 @@ namespace Phase2Tracker {
                   ss << std::dec << " PonPS " << (int)unpacker.clusterX() << " " << (int)unpacker.clusterSize() << " "
                      << (int)unpacker.clusterY() << " " << (int)unpacker.chipId() << endl;
 #endif
-                  clustersBottom.push_back(
+                  // BODGE FIX from Ian -- Must understand why strip number wrong!
+                  if (unpacker.clusterX() < 1016) {
+                     clustersBottom.push_back(
                       Phase2TrackerCluster1D(unpacker.clusterX(), unpacker.clusterY(), unpacker.clusterSize()));
+                  } else {
+                     edm::LogError("Phase2TrackerDigiProducer")<<"MESS UP PonPS: STRIP NUMBER OUT OF RANGE  "<<unpacker.clusterX()<<" "<<unpacker.clusterY()<<" "<<unpacker.clusterSize();
+                  }
                   unpacker++;
                 }
               }

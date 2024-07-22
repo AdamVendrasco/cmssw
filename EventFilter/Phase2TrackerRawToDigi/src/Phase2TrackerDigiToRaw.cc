@@ -62,12 +62,15 @@ namespace Phase2Tracker {
     while (iconn != end) {
       unsigned int fedid = (*iconn)->getCh().first;
       for (icon2 = iconn; icon2 != end && (*icon2)->getCh().first == fedid; icon2++) {
+        int detidStack =  (*icon2)->getDetid() ;
+        // FIXME (when proper cabling exists) : because we use test cabling, we have some detids set to 0 : we should ignore them
+        // Note from Ian. DummyCablingTxt_cfi.py sets detid = 0 for any unconnected DTC channels. If we skip them here, why does it bother?
+        if (detidStack == 0)
+          continue;
+        if (stackMap_.find(detidStack) == stackMap_.end()) edm::LogError("Phase2TrackerDigiProducer") << "DetID "<< detidStack << " in cabling map is unknown to Tracker geometry";
         // detid of first plane is detid of module + 1
         // FIXME (when it is implemented) : we should get this from the topology / geometry
-        unsigned int detid = stackMap_[(*icon2)->getDetid()].first;
-        // FIXME (when proper cabling exists) : because we use test cabling, we have some detids set to 0 : we should ignore them
-        if (detid == 0)
-          continue;
+        unsigned int detid = stackMap_[detidStack].first;
         // end of fixme
         edmNew::DetSetVector<Phase2TrackerCluster1D>::const_iterator digis;
         digis = digishandle_->find(detid);

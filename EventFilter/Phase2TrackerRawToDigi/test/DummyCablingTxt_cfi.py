@@ -35,6 +35,9 @@ def make_vpset_fromfile(filename):
 
     return psets
 
-my_psets = make_vpset_fromfile('detids_phase2.txt')
+# Original file from 8 years ago
+#my_psets = make_vpset_fromfile('detids_phase2.txt')
+# New file generated from TkLayout
+my_psets = make_vpset_fromfile('tkLayoutCabling.txt')
 
 Phase2TrackerCabling = cms.ESSource("Phase2TrackerCablingCfgESSource", modules = cms.VPSet( *my_psets ))
