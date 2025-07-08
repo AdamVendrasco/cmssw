@@ -43,5 +43,3 @@
 
 <library file="JetMatchingEWK*.cc" name="GeneratorInterfacePythia8JetMatchingFxFxHook">
 </library>
-
-

@@ -6,7 +6,7 @@
 #include <string>
 #include <iomanip>
 #include <memory>
-//tmp
+
 using namespace Pythia8;
 
 class DumpPythia8RhadronData_Full : public UserHooks {
