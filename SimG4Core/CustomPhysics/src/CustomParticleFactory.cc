@@ -29,61 +29,94 @@ G4Mutex CustomParticleFactory::customParticleFactoryMutex = G4MUTEX_INITIALIZER;
 CustomParticleFactory::CustomParticleFactory() {}
 
 void CustomParticleFactory::loadCustomParticles(const std::string &filePath) {
-  if (loaded) {
-    return;
-  }
+
 #ifdef G4MULTITHREADED
   G4MUTEXLOCK(&customParticleFactoryMutex);
+  if (loaded) {
+    G4MUTEXUNLOCK(&customParticleFactoryMutex);
+    return;
+  }
+#else
   if (loaded) {
     return;
   }
 #endif
 
-  // loading once
-  loaded = true;
   std::ifstream configFile(filePath.c_str());
-
-  std::string line;
   edm::LogVerbatim("SimG4CoreCustomPhysics")
-      << "CustomParticleFactory: Reading Custom Particle and G4DecayTable from \n"
+      << "CustomParticleFactory: Reading Custom Particle and G4DecayTable from\n  "
       << filePath;
-  // This should be compatible IMO to SLHA
+
   G4ParticleTable *theParticleTable = G4ParticleTable::GetParticleTable();
-  while (getline(configFile, line)) {
-    line.erase(0, line.find_first_not_of(" \t"));  // Remove leading whitespace.
-    if (line.length() == 0 || line.at(0) == '#') {
-      continue;
-    }  // Skip blank lines and comments.
-    // The mass table begins with a line containing "BLOCK MASS"
-    if (ToLower(line).find("block") < line.npos && ToLower(line).find("mass") < line.npos) {
-      edm::LogVerbatim("SimG4CoreCustomPhysics") << "CustomParticleFactory: Retrieving mass table.";
+  std::string line;
+  while (std::getline(configFile, line)) {
+    line.erase(0, line.find_first_not_of(" \t"));  // trim leading whitespace
+    if (line.empty() || line[0] == '#') continue;
+
+    // Mass table
+    if (ToLower(line).find("block") < line.npos &&
+        ToLower(line).find("mass") < line.npos) {
+      edm::LogVerbatim("SimG4CoreCustomPhysics")
+          << "CustomParticleFactory: Retrieving mass table.";
       getMassTable(&configFile);
     }
+
+    // DECAY entries
     if (line.find("DECAY") < line.npos) {
-      int pdgId;
-      double width;
-      std::string tmpString;
-      std::stringstream lineStream(line);
-      lineStream >> tmpString >> pdgId >> width;
-      // assume SLHA format, e.g.: DECAY  1000021  5.50675438E+00   # gluino decays
+      std::stringstream ss(line);
+      std::string tag; int pdgId; double width;
+      ss >> tag >> pdgId >> width;
       edm::LogVerbatim("SimG4CoreCustomPhysics")
-          << "CustomParticleFactory: entry to G4DecayTable: pdgID, width " << pdgId << ",  " << width;
-      G4ParticleDefinition *aParticle = theParticleTable->FindParticle(pdgId);
-      if (nullptr == aParticle || width == 0.0) {
-        continue;
-      }
-      G4DecayTable *aDecayTable = getDecayTable(&configFile, pdgId);
-      aParticle->SetDecayTable(aDecayTable);
-      aParticle->SetPDGStable(false);
-      aParticle->SetPDGLifeTime(1.0 / (width * CLHEP::GeV) * 6.582122e-22 * CLHEP::MeV * CLHEP::s);
-      G4ParticleDefinition *aAntiParticle = theParticleTable->FindAntiParticle(pdgId);
-      if (nullptr != aAntiParticle && aAntiParticle->GetPDGEncoding() != pdgId) {
-        aAntiParticle->SetDecayTable(getAntiDecayTable(pdgId, aDecayTable));
-        aAntiParticle->SetPDGStable(false);
-        aAntiParticle->SetPDGLifeTime(1.0 / (width * CLHEP::GeV) * 6.582122e-22 * CLHEP::MeV * CLHEP::s);
+          << "CustomParticleFactory: entry to G4DecayTable: pdgID=" 
+          << pdgId << ", width=" << width;
+      G4ParticleDefinition *aPart = theParticleTable->FindParticle(pdgId);
+      if (aPart && width > 0.0) {
+        G4DecayTable *dt = getDecayTable(&configFile, pdgId);
+        aPart->SetDecayTable(dt);
+        aPart->SetPDGStable(false);
+        aPart->SetPDGLifeTime(1.0 / (width * CLHEP::GeV)
+                             * 6.582122e-22 * CLHEP::MeV * CLHEP::s);
+        G4ParticleDefinition *aAnti = theParticleTable->FindAntiParticle(pdgId);
+        if (aAnti && aAnti->GetPDGEncoding() != pdgId) {
+          aAnti->SetDecayTable(getAntiDecayTable(pdgId, dt));
+          aAnti->SetPDGStable(false);
+          aAnti->SetPDGLifeTime(aPart->GetPDGLifeTime());
+        }
       }
     }
   }
+
+
+  loaded = true;
+
+  edm::LogVerbatim("SimG4CoreCustomPhysics") << "Dumping custom particle list:";
+  for (auto p : m_particles) {
+    edm::LogVerbatim("SimG4CoreCustomPhysics")
+        << "   " << p->GetParticleName()
+        << "  (PDG="  << p->GetPDGEncoding()
+        << ", mass=" << p->GetPDGMass()/GeV << " GeV)";
+  }
+
+  G4ParticleTable* table = G4ParticleTable::GetParticleTable();
+  auto it = table->GetIterator();
+  it->reset();
+  
+  edm::LogVerbatim("SimG4CoreCustomPhysics")
+      << "===== FULL G4 particle table dump (" 
+      << table->entries() << " entries) =====";
+  
+  while ( (*it)() ) {
+    G4ParticleDefinition* def = it->value();
+    edm::LogVerbatim("SimG4CoreCustomPhysics")
+        << "  " << std::setw(20) << std::left  << def->GetParticleName()
+        << "  PDG="   << std::setw(8)  << def->GetPDGEncoding()
+        << "  mass="  << std::setw(8)  << def->GetPDGMass()/GeV << " GeV"
+        << "  charge="<< std::setw(5)  << def->GetPDGCharge();
+  }
+
+
+
+
 #ifdef G4MULTITHREADED
   G4MUTEXUNLOCK(&customParticleFactoryMutex);
 #endif
